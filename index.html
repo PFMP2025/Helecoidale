@@ -1,76 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Visualiseur 3D Astronaute 2</title>
+  <title>Visualisation 3D - Model Viewer</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; }
-    #infoBox {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px;
-      border-radius: 8px;
-      font-family: sans-serif;
-      display: none;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    model-viewer {
+      width: 80%;
+      height: 500px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="infoBox">Zone cliquée : ...</div>
+  <h1>Modèle 3D Astronaute</h1>
 
-  <script type="module">
-    import * as THREE from 'https://cdn.skypack.dev/three@0.150.1';
-    import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.150.1/examples/jsm/loaders/GLTFLoader.js';
-    import { OrbitControls } from 'https://cdn.skypack.dev/three@0.150.1/examples/jsm/controls/OrbitControls.js';
+  <!-- Modèle de test Astronaute (Fourni par modelviewer.dev) -->
+  <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                alt="Modèle 3D Astronaute"
+                auto-rotate
+                camera-controls
+                ar
+                shadow-intensity="1">
+  </model-viewer>
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    camera.position.set(0, 1.5, 4);
-    controls.update();
-
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
-    scene.add(light);
-
-    const loader = new GLTFLoader();
-    loader.load('https://modelviewer.dev/shared-assets/models/Astronaut.glb', function(gltf) {
-      scene.add(gltf.scene);
-    });
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    const infoBox = document.getElementById('infoBox');
-
-    function onClick(event) {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(scene.children, true);
-      if (intersects.length > 0) {
-        infoBox.style.display = 'block';
-        infoBox.innerText = 'Zone cliquée : Astronaute';
-      }
-    }
-    window.addEventListener('click', onClick);
-
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    }
-    animate();
-  </script>
+  <p>Tournez, zoomez ou explorez le modèle 3D directement dans votre navigateur.</p>
 </body>
 </html>
