@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sculpture Hélicoïdale 3D</title>
+  <title>Modèle 3D Astronaute</title>
   <style>
     body { margin: 0; overflow: hidden; }
     #infoBox {
@@ -19,8 +19,8 @@
 </head>
 <body>
   <div id="infoBox">Zone cliquée : ...</div>
-  
-  <!-- ✅ Liens corrigés -->
+
+  <!-- ✅ Liens vers les bons scripts -->
   <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://unpkg.com/three@0.150.1/examples/js/controls/OrbitControls.js"></script>
@@ -33,15 +33,17 @@
     document.body.appendChild(renderer.domElement);
 
     let controls = new THREE.OrbitControls(camera, renderer.domElement);
-    camera.position.set(0, 0, 50);
+    camera.position.set(0, 1.5, 4);
     controls.update();
 
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
     scene.add(light);
 
     const loader = new THREE.GLTFLoader();
-    loader.load('helical_sculpture.glb', function(gltf) {
+    loader.load('https://modelviewer.dev/shared-assets/models/Astronaut.glb', function(gltf) {
       scene.add(gltf.scene);
+    }, undefined, function(error) {
+      console.error('Erreur lors du chargement du modèle :', error);
     });
 
     window.addEventListener('resize', () => {
@@ -61,7 +63,7 @@
       const intersects = raycaster.intersectObjects(scene.children, true);
       if (intersects.length > 0) {
         infoBox.style.display = 'block';
-        infoBox.innerText = 'Zone cliquée : Sculpture';
+        infoBox.innerText = 'Zone cliquée : Astronaute';
       }
     }
     window.addEventListener('click', onClick);
